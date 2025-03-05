@@ -5,7 +5,7 @@ OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "your_api_key_here")
 
 # AI Model Configuration
 MODEL_CONFIG = {
-    "model_name": "Qwen/Qwen2.5-0.5B",
+    "model_name": "Qwen/Qwen2.5-0.5B",  # Updated to Qwen 2.5 free version
     "model_kwargs": {
         "trust_remote_code": True,
         "device_map": "auto",
