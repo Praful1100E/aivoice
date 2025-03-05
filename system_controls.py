@@ -28,3 +28,9 @@ class SystemController:
         except Exception as e:
             print(f"Brightness control error: {e}")
             return False
+
+    def get_volume(self):
+        return self.volume_level
+
+    def get_brightness(self):
+        return self.brightness_level

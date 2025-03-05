@@ -7,59 +7,79 @@ from web_services import WebServices
 class JarvisAssistantCLI:
     def __init__(self):
         print("Initializing Jarvis Assistant...")
-        self.voice = VoiceAssistant()
-        self.ai = AIAssistant()
-        self.system = SystemController()
-        self.web = WebServices()
+        try:
+            self.voice = VoiceAssistant()
+            self.ai = AIAssistant()
+            self.system = SystemController()
+            self.web = WebServices()
+            print("\nJarvis is ready! Speak a command or say 'exit' to quit.")
+        except Exception as e:
+            print(f"Critical initialization error: {e}")
+            sys.exit(1)
 
     def process_command(self, command):
         if not command:
-            return "Waiting for command..."
+            return None
 
-        print(f"Processing command: {command}")
+        # Handle exit command
+        if command.lower() in ['exit', 'quit', 'stop']:
+            print("\nGoodbye!")
+            sys.exit(0)
+
+        print(f"\nProcessing command: {command}")
         response = None
 
-        # Website commands
-        if "open youtube" in command:
-            response = self.web.open_website("youtube")
-        elif "open google" in command:
-            response = self.web.open_website("google")
+        try:
+            # Website commands
+            if "open youtube" in command:
+                response = self.web.open_website("youtube")
+            elif "open google" in command:
+                response = self.web.open_website("google")
 
-        # Wikipedia queries
-        elif "who is" in command or "what is" in command:
-            query = command.replace("who is", "").replace("what is", "").strip()
-            response = self.web.search_wikipedia(query)
+            # Wikipedia queries
+            elif "who is" in command or "what is" in command:
+                query = command.replace("who is", "").replace("what is", "").strip()
+                response = self.web.search_wikipedia(query)
 
-        # System controls
-        elif "increase volume" in command:
-            self.system.set_volume(80)
-            response = "Volume increased (Simulated)"
-        elif "decrease volume" in command:
-            self.system.set_volume(30)
-            response = "Volume decreased (Simulated)"
-        elif "increase brightness" in command:
-            self.system.set_brightness(80)
-            response = "Brightness increased"
-        elif "decrease brightness" in command:
-            self.system.set_brightness(30)
-            response = "Brightness decreased"
+            # System controls
+            elif "increase volume" in command:
+                self.system.set_volume(80)
+                response = "Volume increased"
+            elif "decrease volume" in command:
+                self.system.set_volume(30)
+                response = "Volume decreased"
+            elif "increase brightness" in command:
+                self.system.set_brightness(80)
+                response = "Brightness increased"
+            elif "decrease brightness" in command:
+                self.system.set_brightness(30)
+                response = "Brightness decreased"
 
-        # AI response for other queries
-        else:
-            response = self.ai.generate_response(command)
+            # AI response for other queries
+            else:
+                print("Generating AI response...")
+                response = self.ai.generate_response(command)
 
-        if response:
-            print(f"Response: {response}")
-            self.voice.speak(response)
-        return response
+            if response:
+                print(f"\nResponse: {response}")
+                self.voice.speak(response)
+            return response
+
+        except Exception as e:
+            error_msg = f"Error processing command: {str(e)}"
+            print(error_msg)
+            self.voice.speak("Sorry, I encountered an error processing your command.")
+            return error_msg
 
 def main():
     try:
-        print("Starting Jarvis Assistant in CLI mode...")
+        print("\nStarting Jarvis Voice Assistant...")
+        print("Initializing components...")
+
         jarvis = JarvisAssistantCLI()
-        print("Initialization complete. Ready for voice commands.")
 
         while True:
+            print("\nListening for your command...")
             command = jarvis.voice.listen()
             if command:
                 jarvis.process_command(command)
