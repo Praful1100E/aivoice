@@ -37,11 +37,6 @@ class JarvisAssistant:
             query = command.replace("who is", "").replace("what is", "").strip()
             response = self.web.search_wikipedia(query)
 
-        # Weather information
-        elif "weather in" in command:
-            city = command.split("weather in")[-1].strip()
-            response = self.web.get_weather(city)
-
         # System controls
         elif "increase volume" in command:
             self.system.set_volume(80)

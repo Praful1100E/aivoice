@@ -1,7 +1,5 @@
 import wikipedia
-import requests
 import webbrowser
-from config import OPENWEATHER_API_KEY
 
 class WebServices:
     def search_wikipedia(self, query):
@@ -14,18 +12,6 @@ class WebServices:
             return "No Wikipedia page found."
         except Exception as e:
             return f"Wikipedia error: {str(e)}"
-
-    def get_weather(self, city):
-        try:
-            url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={OPENWEATHER_API_KEY}&units=metric"
-            response = requests.get(url).json()
-            
-            if response.get("main"):
-                temperature = response["main"]["temp"]
-                return f"The temperature in {city} is {temperature} degrees Celsius."
-            return "City not found."
-        except requests.RequestException as e:
-            return f"Weather API error: {str(e)}"
 
     def open_website(self, site):
         try:

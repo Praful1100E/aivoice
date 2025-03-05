@@ -6,6 +6,7 @@ warnings.filterwarnings('ignore')
 class SystemController:
     def __init__(self):
         self.volume_level = 50  # Default volume level
+        self.brightness_level = 50  # Default brightness level
         print("System Controller initialized in compatibility mode")
 
     def set_volume(self, level):
@@ -20,8 +21,9 @@ class SystemController:
 
     def set_brightness(self, level):
         try:
-            import screen_brightness_control as sbc
-            sbc.set_brightness(level)
+            # Mock implementation for brightness control
+            self.brightness_level = max(0, min(100, level))
+            print(f"Brightness would be set to {self.brightness_level}% (Simulated)")
             return True
         except Exception as e:
             print(f"Brightness control error: {e}")
